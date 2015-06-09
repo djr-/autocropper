@@ -9,7 +9,9 @@ int main(int argc, char** argv)
 {
 	Mat originalImage = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
 
-	cout << "Hello world\n";
+	imshow("Input image", originalImage);
+
+	waitKey();
 
 	return 0;
 }
