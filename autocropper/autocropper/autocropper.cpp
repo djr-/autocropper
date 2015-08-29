@@ -1,8 +1,8 @@
 #include "file_utilities.h"
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include "opencv2/video/background_segm.hpp"
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/video.hpp>
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -83,7 +83,7 @@ vector<Mat> readDataset(const string& startingImageFilename)
 void computeForegroundMask(const vector<Mat>& images)
 {
 	Mat foregroundMask, foregroundImage, backgroundImage;
-	BackgroundSubtractorMOG2 backgroundModel;
+	Ptr<BackgroundSubtractorMOG2> pMOG2 = createBackgroundSubtractorMOG2();
 
 	vector<Mat> foregroundMasks;
 
@@ -92,7 +92,7 @@ void computeForegroundMask(const vector<Mat>& images)
 		if (foregroundImage.empty())
 			foregroundImage.create(image.size(), image.type());
 
-		backgroundModel(image, foregroundMask);
+		pMOG2->apply(image, foregroundMask);
 
 		foregroundImage = Scalar::all(0);
 		image.copyTo(foregroundImage, foregroundMask);
