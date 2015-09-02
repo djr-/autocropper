@@ -86,6 +86,8 @@ void computeForegroundMask(const vector<Mat>& images)
 	Ptr<BackgroundSubtractorMOG2> pMOG2 = createBackgroundSubtractorMOG2();
 
 	vector<Mat> foregroundMasks;
+	
+	int i = 0;
 
 	for each (Mat image in images)
 	{
@@ -97,19 +99,14 @@ void computeForegroundMask(const vector<Mat>& images)
 		foregroundImage = Scalar::all(0);
 		image.copyTo(foregroundImage, foregroundMask);
 
-		waitKey();
+		string filename = FileUtilities::buildFilename("C:\\Temp\\images\\fg", ++i);
+		imwrite(filename, foregroundImage);
 	}
 
-	//int erosion_size = 1;
-	//Mat element = getStructuringElement(MORPH_RECT,
-	//	Size(2 * erosion_size + 1, 2 * erosion_size + 1),
-	//	Point(erosion_size, erosion_size));
-	//erode(fgImg, fgImg, element);
+	imwrite("TestImages/tmp/fg.png", foregroundImage);
 
-	imwrite("foreground.png", foregroundImage);
-
-	imshow("fgMask", foregroundMask);
-	imshow("fgImg", foregroundImage);
+	//imshow("fgMask", foregroundMask);
+	//imshow("fgImg", foregroundImage);
 
 	waitKey();
 }

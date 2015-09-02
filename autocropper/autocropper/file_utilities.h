@@ -13,5 +13,6 @@ namespace utility
 	{
 	public:
 		static bool fileExists(const std::string& fileName);
+		static std::string buildFilename(const std::string& prefix, int number, const std::string& filetype = "png");
 	};
 }
