@@ -10,5 +10,5 @@
 
 namespace experimental
 {
-	static cv::Mat andImages(std::vector<cv::Mat>& images);
+	static cv::Mat and(std::vector<cv::Mat>& images);
 }
