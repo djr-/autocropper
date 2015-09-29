@@ -10,5 +10,6 @@
 
 namespace experimental
 {
-	static cv::Mat and(std::vector<cv::Mat>& images);
+	cv::Mat and(std::vector<cv::Mat>& images);
+	cv::Mat computeForegroundMask(const std::vector<cv::Mat>& images);
 }
