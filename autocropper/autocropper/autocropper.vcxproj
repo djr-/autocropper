@@ -152,9 +152,11 @@
     <ClCompile Include="autocropper.cpp" />
     <ClCompile Include="experimental_functions.cpp" />
     <ClCompile Include="file_utilities.cpp" />
+    <ClCompile Include="image_reader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="experimental_functions.h" />
+    <ClInclude Include="image_reader.h" />
     <ClInclude Include="file_utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
