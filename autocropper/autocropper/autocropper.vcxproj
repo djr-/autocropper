@@ -149,7 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="autocropper.cpp" />
+    <ClCompile Include="Autocropper.cpp" />
     <ClCompile Include="ExperimentalFunctions.cpp" />
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="ImageReader.cpp" />
