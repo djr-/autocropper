@@ -1,5 +1,5 @@
-#include "image_reader.h"
-#include "file_utilities.h"
+#include "ImageReader.h"
+#include "FileUtilities.h"
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>

@@ -1,5 +1,5 @@
-#include "experimental_functions.h"
-#include "file_utilities.h"
+#include "ExperimentalFunctions.h"
+#include "FileUtilities.h"
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/video.hpp>

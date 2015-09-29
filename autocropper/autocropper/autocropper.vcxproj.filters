@@ -18,24 +18,24 @@
     <ClCompile Include="autocropper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="file_utilities.cpp">
+    <ClCompile Include="FileUtilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="experimental_functions.cpp">
+    <ClCompile Include="ImageReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="image_reader.cpp">
+    <ClCompile Include="ExperimentalFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="file_utilities.h">
+    <ClInclude Include="FileUtilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="experimental_functions.h">
+    <ClInclude Include="ImageReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="image_reader.h">
+    <ClInclude Include="ExperimentalFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

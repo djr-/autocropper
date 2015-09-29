@@ -1,6 +1,6 @@
-#include "experimental_functions.h"
-#include "file_utilities.h"
-#include "image_reader.h"
+#include "ExperimentalFunctions.h"
+#include "FileUtilities.h"
+#include "ImageReader.h"
 #include <opencv2/core.hpp>
 #include <iostream>
 
