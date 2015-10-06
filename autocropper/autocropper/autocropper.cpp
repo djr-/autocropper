@@ -57,15 +57,17 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	//vector<Mat> images = ImageReader::readDataset(argv[1]);
-	Mat img = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);	//TODO: Temporary mechanism to skip reading all of the images.
+	vector<Mat> images = ImageReader::readDataset(argv[1]);
+	//Mat img = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);	//TODO: Temporary mechanism to skip reading all of the images.
 
-	img = preprocessImage(img);
+	Mat andImg = experimental::and(images);
+
+	andImg = preprocessImage(andImg);
 
 	const string WINDOW_NAME = "Thresholded Image";
 	TrackbarWindow tbWindow = TrackbarWindow(WINDOW_NAME, "Thresh", 100, 255, trackbarMethod);
 	resizeWindow(WINDOW_NAME, 1226, 1028);
-	tbWindow.show(img);
+	tbWindow.show(andImg);
 
 	waitKey();
 
