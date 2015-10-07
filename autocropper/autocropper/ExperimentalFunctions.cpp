@@ -32,11 +32,32 @@ namespace experimental
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
-	// computeForegroundMask()
+	// or()
 	//
-	// Computes the foreground mask based on some background subtraction method.
+	// Combine the images via an or operation -- useful in visualization of the
+	// maximum extents of the root system.
 	//////////////////////////////////////////////////////////////////////////////////
-	Mat computeForegroundMask(const vector<Mat>& images)
+	Mat or(vector<Mat>& images)
+	{
+		if (images.size() == 0)
+			return Mat();
+
+		Mat orImage = images.at(0).clone();
+
+		for (int i = 0; i < images.size(); ++i)
+		{
+			bitwise_or(orImage, images.at(i), orImage);
+		}
+
+		return orImage;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// computeForegroundImage()
+	//
+	// Computes a foreground image based on some background subtraction method.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat computeForegroundImage(const vector<Mat>& images)
 	{
 		Mat foregroundMask, foregroundImage, backgroundImage;
 		Ptr<BackgroundSubtractorMOG2> pMOG2 = createBackgroundSubtractorMOG2();
@@ -60,6 +81,43 @@ namespace experimental
 		}
 
 		return foregroundImage;
+
+		waitKey();
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// computeForegroundImages()
+	//
+	// Computes a foreground images based on some background subtraction method.
+	//////////////////////////////////////////////////////////////////////////////////
+	vector<Mat> computeForegroundImages(const vector<Mat>& images)
+	{
+		Mat foregroundMask, foregroundImage, backgroundImage;
+		Ptr<BackgroundSubtractorMOG2> pMOG2 = createBackgroundSubtractorMOG2();
+
+		vector<Mat> foregroundImages;
+
+		int i = 0;
+
+		for each (Mat image in images)
+		{
+			if (foregroundImage.empty())
+				foregroundImage.create(image.size(), image.type());
+
+			pMOG2->apply(image, foregroundMask);
+
+			foregroundImage = Scalar::all(0);
+			image.copyTo(foregroundImage, foregroundMask);
+
+			string filename = utility::FileUtilities::buildFilename("C:\\Temp\\images\\fg", ++i);
+			if (i > 1)	//TODO_DR: Deal with the first file.
+			{
+				imwrite(filename, foregroundImage);
+				foregroundImages.push_back(foregroundImage.clone());
+			}
+		}
+
+		return foregroundImages;
 
 		waitKey();
 	}

@@ -28,7 +28,7 @@ Mat trackbarMethod(Mat image, int sliderValue)
 
 Mat preprocessImage(Mat img)
 {
-	bitwise_not(img, img);
+	//bitwise_not(img, img);
 
 	Mat imgBackup = img.clone();
 	Mat enhancedCenterMask = generateEnhancedCenterMask(img.size());
@@ -37,7 +37,7 @@ Mat preprocessImage(Mat img)
 	img.convertTo(img, CV_8UC1);
 
 	bitwise_not(img, img);
-	blur(img, img, Size(5, 5));
+	//blur(img, img, Size(5, 5));
 	return img;
 }
 
@@ -60,14 +60,15 @@ int main(int argc, char** argv)
 	vector<Mat> images = ImageReader::readDataset(argv[1]);
 	//Mat img = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);	//TODO: Temporary mechanism to skip reading all of the images.
 
-	Mat andImg = experimental::and(images);
+	vector<Mat> foregroundImages = experimental::computeForegroundImages(images);
+	Mat orImg = or(foregroundImages);
 
-	andImg = preprocessImage(andImg);
+	orImg = preprocessImage(orImg);
 
 	const string WINDOW_NAME = "Thresholded Image";
 	TrackbarWindow tbWindow = TrackbarWindow(WINDOW_NAME, "Thresh", 100, 255, trackbarMethod);
 	resizeWindow(WINDOW_NAME, 1226, 1028);
-	tbWindow.show(andImg);
+	tbWindow.show(orImg);
 
 	waitKey();
 
