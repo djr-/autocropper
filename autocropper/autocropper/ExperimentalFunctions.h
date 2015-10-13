@@ -15,6 +15,7 @@ namespace experimental
 	cv::Mat computeForegroundImage(const std::vector<cv::Mat>& images);
 	std::vector<cv::Mat> computeForegroundImages(const std::vector<cv::Mat>& images);
 	cv::Mat computeHistogram(cv::Mat image);
+	cv::Mat plotHistogram(cv::Mat image);
 
 	void padImage(const cv::Mat& sourceImage, cv::Mat& destinationImage, const int padAmount);
 	void removePadding(const cv::Mat& sourceImage, cv::Mat& destinationImage, const int padAmount);

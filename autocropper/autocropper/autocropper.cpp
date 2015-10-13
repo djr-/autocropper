@@ -63,11 +63,11 @@ int main(int argc, char** argv)
 	vector<Mat> foregroundImages = experimental::computeForegroundImages(images);
 	Mat orImg = or(foregroundImages);
 
-	Mat beforeHist = computeHistogram(orImg);
+	Mat beforeHist = plotHistogram(orImg);
 	imshow("histBeforeProcessing", beforeHist);
 
 	orImg = preprocessImage(orImg);
-	Mat afterHist = computeHistogram(orImg);
+	Mat afterHist = plotHistogram(orImg);
 	imshow("histAfterProcessing", afterHist);
 
 	const string WINDOW_NAME = "Thresholded Image";

@@ -159,6 +159,49 @@ namespace experimental
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
+	// plotHistogram()
+	//
+	// Another method to compute the histogram.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat plotHistogram(Mat image)
+	{
+		const unsigned int NUMBER_OF_BINS = 256;
+		const unsigned int WINDOW_HEIGHT = NUMBER_OF_BINS;
+		const unsigned int WINDOW_WIDTH = NUMBER_OF_BINS;
+		Mat histogramImage = Mat::zeros(WINDOW_HEIGHT, WINDOW_WIDTH, CV_8UC1);
+
+		double hist[NUMBER_OF_BINS] = { 0 };
+
+		// Let's compute the histogram.
+		MatIterator_<uchar> it, end;
+		for (it = image.begin<uchar>(), end = image.end<uchar>();
+			it != end;
+			++it)
+		{
+			hist[*it]++;
+		}
+
+		// Let's find the max bin amount in the histogram, so that we can scale the rest of the histogram accordingly.
+		double max = 0;
+		for (unsigned int bin = 0; bin < NUMBER_OF_BINS; ++bin)
+		{
+			const double binValue = hist[bin];
+			if (binValue > max)
+				max = binValue;
+		}
+
+		// Let's plot the histogram.
+		for (unsigned int bin = 0; bin < NUMBER_OF_BINS; ++bin)
+		{
+			const int binHeight = static_cast<int>(hist[bin] * WINDOW_HEIGHT / max);
+
+			line(histogramImage, Point(bin, WINDOW_HEIGHT - binHeight), Point(bin, WINDOW_HEIGHT), Scalar(255, 255, 255));
+		}
+
+		return histogramImage;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// padImage()
 	//
 	// Pads the image by the specified padding amount with the default value (0).
