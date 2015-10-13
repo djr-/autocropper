@@ -140,7 +140,7 @@ namespace experimental
 		calcHist(&image, 1, 0, Mat(), histogram, 1, &numBins, &histogramRange);
 
 		// Draw histogram.
-		int windowWidth = 512; int windowHeight = 400;
+		int windowWidth = 1024; int windowHeight = 800;
 		int bin_w = cvRound((double)windowWidth / numBins);
 
 		Mat histImage(windowHeight, windowWidth, CV_8UC1, Scalar(0, 0, 0));
