@@ -123,6 +123,42 @@ namespace experimental
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
+	// computeHistogram()
+	//
+	// Compute the histogram of the specified image and return it.
+	//////////////////////////////////////////////////////////////////////////////////
+	cv::Mat computeHistogram(cv::Mat image)
+	{
+		Mat histogram;
+
+		int numBins = 256;
+
+		float range[] = { 0, 256 };
+		const float* histogramRange = { range };
+		bool uniform = true;
+
+		calcHist(&image, 1, 0, Mat(), histogram, 1, &numBins, &histogramRange);
+
+		// Draw histogram.
+		int windowWidth = 512; int windowHeight = 400;
+		int bin_w = cvRound((double)windowWidth / numBins);
+
+		Mat histImage(windowHeight, windowWidth, CV_8UC1, Scalar(0, 0, 0));
+
+		/// Normalize the result to [ 0, histImage.rows ]
+		normalize(histogram, histogram, 0, histImage.rows, NORM_MINMAX, -1, Mat());
+
+		for (int i = 1; i < numBins; i++)
+		{
+			line(histImage, Point(bin_w*(i - 1), windowHeight - cvRound(histogram.at<float>(i - 1))),
+				Point(bin_w*(i), windowHeight - cvRound(histogram.at<float>(i))),
+				Scalar(255, 255, 255));
+		}
+
+		return histImage;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// padImage()
 	//
 	// Pads the image by the specified padding amount with the default value (0).
