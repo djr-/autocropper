@@ -42,6 +42,22 @@ Mat preprocessImage(Mat img)
 	Mat both;
 	bitwise_or(horiz, vert, both);
 
+	// TODO: Crop the image based on the nearest non-black pixels to the middle.
+	//		Then, invert the image and compute the largest contour. This should highlight the roots.
+	Rect tmp = computeInnermostRectangle(both);
+
+	Mat croppedImage = img(tmp);
+	//imwrite("origimg.png", img);
+	//imwrite("croppedimg.png", croppedImage);
+	//waitKey();
+
+	blur(croppedImage, croppedImage, Size(5, 5));
+	bitwise_not(croppedImage, croppedImage);
+	threshold(croppedImage, croppedImage, 245, 255, CV_THRESH_BINARY);
+	OcvUtility::keepOnlyLargestContour(croppedImage);
+
+	imwrite("croppedimg.png", croppedImage);
+
 	Mat imgBackup = img.clone();
 	Mat enhancedCenterMask = generateEnhancedCenterMask(img.size());
 	img.convertTo(img, CV_32FC1);

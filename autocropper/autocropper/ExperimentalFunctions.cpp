@@ -13,6 +13,65 @@ using namespace OcvUtility;
 namespace experimental
 {
 	//////////////////////////////////////////////////////////////////////////////////
+	// computeInnermostRectangle()
+	//
+	// Compute the innermost rectangle that can be defined based on the specified
+	// image.
+	//////////////////////////////////////////////////////////////////////////////////
+	Rect computeInnermostRectangle(Mat image)	//TODO: This function name is terrible.
+	{
+		Point center = Point(image.size().width / 2, image.size().height / 2);
+		int u = 0, d = image.size().height, l = 0, r = image.size().width;
+
+		// Find the nearest nonwhite pixel above.
+		for (int i = center.y; i >= 0; --i)
+		{
+			Point currentPoint = Point(center.x, i);
+			int valueAtCurrentPoint = image.at<uchar>(currentPoint);
+			if (valueAtCurrentPoint != 0)
+			{
+				u = i;
+				break;
+			}
+		}
+
+		// Find the nearest nonwhite pixel below.
+		for (int i = center.y; i < image.size().height; ++i)
+		{
+			Point currentPoint = Point(center.x, i);
+			if (image.at<uchar>(currentPoint) != 0)
+			{
+				d = i;
+				break;
+			}
+		}
+
+		// Find the nearest nonwhite pixel to the left.
+		for (int i = center.x; i >= 0; --i)
+		{
+			Point currentPoint = Point(i, center.y);
+			if (image.at<uchar>(currentPoint) != 0)
+			{
+				l = i;
+				break;
+			}
+		}
+
+		// Find the nearest nonwhite pixel to the right.
+		for (int i = center.x; i < image.size().width; ++i)
+		{
+			Point currentPoint = Point(i, center.y);
+			if (image.at<uchar>(currentPoint) != 0)
+			{
+				r = i;
+				break;
+			}
+		}
+
+		return Rect(l, u, r - l, d - u);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// findLargestHorizontalLines()
 	//
 	// Returns an image containing the largest horizontal lines found in the image.
@@ -97,7 +156,7 @@ namespace experimental
 			pMOG2->apply(image, foregroundMask);
 
 			foregroundImage = Scalar::all(0);
-			image.copyTo(foregroundImage, foregroundMask);
+			image.copyTo(foregroundImage, foregroundMask);	//TODO: Does using the mask rather than the image improve the results?
 
 			string filename = utility::FileUtilities::buildFilename("C:\\Temp\\images\\fg", ++i);
 			if (i > 1)	//TODO_DR: Deal with the first file.
