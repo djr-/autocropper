@@ -37,6 +37,16 @@ Mat preprocessImage(Mat img)
 	//threshold(img, img, 245, 255, CV_THRESH_BINARY);
 	//OcvUtility::keepOnlyLargestContour(img);
 
+	Mat vert;
+	Mat horiz;
+	auto vertElem = getStructuringElement(MORPH_RECT, Size(1, img.size().height / 2));
+	morphologyEx(img, vert, MORPH_OPEN, vertElem);
+	auto horizElem = getStructuringElement(MORPH_RECT, Size(img.size().width / 8, 1));
+	morphologyEx(img, horiz, MORPH_OPEN, horizElem);
+
+	Mat both;
+	bitwise_or(horiz, vert, both);
+
 	Mat imgBackup = img.clone();
 	Mat enhancedCenterMask = generateEnhancedCenterMask(img.size());
 	img.convertTo(img, CV_32FC1);
@@ -45,6 +55,8 @@ Mat preprocessImage(Mat img)
 
 	bitwise_not(img, img);
 	//blur(img, img, Size(5, 5));
+
+
 	return img;
 }
 
