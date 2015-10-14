@@ -32,6 +32,11 @@ Mat preprocessImage(Mat img)
 {
 	//bitwise_not(img, img);
 
+	//blur(img, img, Size(5, 5));
+	//bitwise_not(img, img);
+	//threshold(img, img, 245, 255, CV_THRESH_BINARY);
+	//OcvUtility::keepOnlyLargestContour(img);
+
 	Mat imgBackup = img.clone();
 	Mat enhancedCenterMask = generateEnhancedCenterMask(img.size());
 	img.convertTo(img, CV_32FC1);
@@ -67,11 +72,6 @@ int main(int argc, char** argv)
 
 	//Mat beforeHist = plotHistogram(orImg);
 	//imshow("histBeforeProcessing", beforeHist);
-
-
-	//blur(orImg, orImg, Size(27, 27));
-	//bitwise_not(orImg, orImg);
-
 
 	orImg = preprocessImage(orImg);
 	//Mat afterHist = plotHistogram(orImg);
