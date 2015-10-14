@@ -9,6 +9,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 namespace OcvUtility
 {
+	cv::Mat and(std::vector<cv::Mat>& images);
+	cv::Mat or(std::vector<cv::Mat>& images);
 	std::vector<cv::Point> keepOnlyLargestContour(cv::Mat& originalImage);
 	int getLargestContourIndex(const std::vector<std::vector<cv::Point>>& contours);
 

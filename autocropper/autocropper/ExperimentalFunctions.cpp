@@ -1,5 +1,6 @@
 #include "ExperimentalFunctions.h"
 #include "FileUtilities.h"
+#include "OcvUtilities.h"
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/video.hpp>
@@ -7,51 +8,10 @@
 using namespace cv;
 using namespace experimental;
 using namespace std;
+using namespace OcvUtility;
 
 namespace experimental
 {
-	//////////////////////////////////////////////////////////////////////////////////
-	// and()
-	//
-	// Combine the images via an and operation -- useful in visualization of the
-	// maximum extents of the root system.
-	//////////////////////////////////////////////////////////////////////////////////
-	Mat and(vector<Mat>& images)
-	{
-		if (images.size() == 0)
-			return Mat();
-
-		Mat andImage = images.at(0).clone();
-
-		for (int i = 0; i < images.size(); ++i)
-		{
-			bitwise_and(andImage, images.at(i), andImage);
-		}
-
-		return andImage;
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	// or()
-	//
-	// Combine the images via an or operation -- useful in visualization of the
-	// maximum extents of the root system.
-	//////////////////////////////////////////////////////////////////////////////////
-	Mat or(vector<Mat>& images)
-	{
-		if (images.size() == 0)
-			return Mat();
-
-		Mat orImage = images.at(0).clone();
-
-		for (int i = 0; i < images.size(); ++i)
-		{
-			bitwise_or(orImage, images.at(i), orImage);
-		}
-
-		return orImage;
-	}
-
 	//////////////////////////////////////////////////////////////////////////////////
 	// computeForegroundImage()
 	//
@@ -202,26 +162,6 @@ namespace experimental
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
-	// padImage()
-	//
-	// Pads the image by the specified padding amount with the default value (0).
-	//////////////////////////////////////////////////////////////////////////////////
-	void padImage(const Mat& sourceImage, Mat& destinationImage, const int padAmount)
-	{
-		copyMakeBorder(sourceImage, destinationImage, 1, 1, 1, 1, BORDER_CONSTANT);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	// removePadding()
-	//
-	// Removes borders from the specified image by the specified padding amount.
-	//////////////////////////////////////////////////////////////////////////////////
-	void removePadding(const Mat& sourceImage, Mat& destinationImage, const int padAmount)
-	{
-		sourceImage(Rect(padAmount, padAmount, sourceImage.size().width - 1 - padAmount, sourceImage.size().height - 1 - padAmount)).copyTo(destinationImage);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////
 	// generateEnhancedCenterMask()
 	//
 	// Generate a mask which has a value of 1.0 in the center, and 0.0 along the
@@ -231,13 +171,13 @@ namespace experimental
 	Mat generateEnhancedCenterMask(Size size)
 	{
 		Mat image = Mat::ones(size, CV_8UC1);
-		padImage(image, image, 1);
+		padImage(image, image);
 		distanceTransform(image, image, CV_DIST_C, 3);
 		double maxVal;
 		minMaxLoc(image, NULL, &maxVal);
 		image *= 1/maxVal;
 
-		removePadding(image, image, 1);
+		removePadding(image, image);
 
 		return image;
 	}

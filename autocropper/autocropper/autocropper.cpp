@@ -1,6 +1,7 @@
 #include "ExperimentalFunctions.h"
 #include "FileUtilities.h"
 #include "ImageReader.h"
+#include "OcvUtilities.h"
 #include "TrackbarWindow.h"
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -12,6 +13,7 @@ using namespace cv;
 using namespace experimental;
 using namespace std;
 using namespace utility;
+using namespace OcvUtility;
 
 Mat trackbarMethod(Mat image, int sliderValue)
 {

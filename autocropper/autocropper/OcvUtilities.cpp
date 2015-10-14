@@ -6,6 +6,48 @@ using namespace cv;
 namespace OcvUtility
 {
 	//////////////////////////////////////////////////////////////////////////////////
+	// and()
+	//
+	// Combine the images via an and operation -- useful in visualization of the
+	// maximum extents of the root system.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat and(vector<Mat>& images)
+	{
+		if (images.size() == 0)
+			return Mat();
+
+		Mat andImage = images.at(0).clone();
+
+		for (int i = 0; i < images.size(); ++i)
+		{
+			bitwise_and(andImage, images.at(i), andImage);
+		}
+
+		return andImage;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// or()
+	//
+	// Combine the images via an or operation -- useful in visualization of the
+	// maximum extents of the root system.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat or(vector<Mat>& images)
+	{
+		if (images.size() == 0)
+			return Mat();
+
+		Mat orImage = images.at(0).clone();
+
+		for (int i = 0; i < images.size(); ++i)
+		{
+			bitwise_or(orImage, images.at(i), orImage);
+		}
+
+		return orImage;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// keepOnlyLargestContour()
 	//
 	// Remove all contours that are not the largest contour from the specified image.
