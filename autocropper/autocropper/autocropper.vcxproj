@@ -153,12 +153,14 @@
     <ClCompile Include="ExperimentalFunctions.cpp" />
     <ClCompile Include="FileUtilities.cpp" />
     <ClCompile Include="ImageReader.cpp" />
+    <ClCompile Include="OcvUtilities.cpp" />
     <ClCompile Include="TrackbarWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ExperimentalFunctions.h" />
     <ClInclude Include="ImageReader.h" />
     <ClInclude Include="FileUtilities.h" />
+    <ClInclude Include="OcvUtilities.h" />
     <ClInclude Include="TrackbarWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

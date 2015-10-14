@@ -63,12 +63,17 @@ int main(int argc, char** argv)
 	vector<Mat> foregroundImages = experimental::computeForegroundImages(images);
 	Mat orImg = or(foregroundImages);
 
-	Mat beforeHist = plotHistogram(orImg);
-	imshow("histBeforeProcessing", beforeHist);
+	//Mat beforeHist = plotHistogram(orImg);
+	//imshow("histBeforeProcessing", beforeHist);
+
+
+	//blur(orImg, orImg, Size(27, 27));
+	//bitwise_not(orImg, orImg);
+
 
 	orImg = preprocessImage(orImg);
-	Mat afterHist = plotHistogram(orImg);
-	imshow("histAfterProcessing", afterHist);
+	//Mat afterHist = plotHistogram(orImg);
+	//imshow("histAfterProcessing", afterHist);
 
 	const string WINDOW_NAME = "Thresholded Image";
 	TrackbarWindow tbWindow = TrackbarWindow(WINDOW_NAME, "Thresh", 100, 255, trackbarMethod);

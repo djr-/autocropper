@@ -225,7 +225,8 @@ namespace experimental
 	// generateEnhancedCenterMask()
 	//
 	// Generate a mask which has a value of 1.0 in the center, and 0.0 along the
-	// edges, with a smooth gradient between.
+	// edges, with a smooth gradient between. This mask may be sensitive to 
+	// variations between length and width of the image.
 	//////////////////////////////////////////////////////////////////////////////////
 	Mat generateEnhancedCenterMask(Size size)
 	{
