@@ -13,6 +13,36 @@ using namespace OcvUtility;
 namespace experimental
 {
 	//////////////////////////////////////////////////////////////////////////////////
+	// findLargestHorizontalLines()
+	//
+	// Returns an image containing the largest horizontal lines found in the image.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat findLargestHorizontalLines(Mat image)
+	{
+		Mat horizontalLines;
+
+		auto horizElem = getStructuringElement(MORPH_RECT, Size(image.size().width / 2, 1));
+		morphologyEx(image, horizontalLines, MORPH_OPEN, horizElem);
+
+		return horizontalLines;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// findLargestVerticalLines()
+	//
+	// Returns an image containing the largest vertical lines found in the image.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat findLargestVerticalLines(Mat image)
+	{
+		Mat verticalLines;
+
+		auto vertElem = getStructuringElement(MORPH_RECT, Size(1, image.size().height / 2));
+		morphologyEx(image, verticalLines, MORPH_OPEN, vertElem);
+
+		return verticalLines;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// computeForegroundImage()
 	//
 	// Computes a foreground image based on some background subtraction method.

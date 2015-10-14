@@ -37,13 +37,8 @@ Mat preprocessImage(Mat img)
 	//threshold(img, img, 245, 255, CV_THRESH_BINARY);
 	//OcvUtility::keepOnlyLargestContour(img);
 
-	Mat vert;
-	Mat horiz;
-	auto vertElem = getStructuringElement(MORPH_RECT, Size(1, img.size().height / 2));
-	morphologyEx(img, vert, MORPH_OPEN, vertElem);
-	auto horizElem = getStructuringElement(MORPH_RECT, Size(img.size().width / 8, 1));
-	morphologyEx(img, horiz, MORPH_OPEN, horizElem);
-
+	Mat horiz = findLargestHorizontalLines(img);
+	Mat vert = findLargestVerticalLines(img);
 	Mat both;
 	bitwise_or(horiz, vert, both);
 

@@ -10,6 +10,8 @@
 
 namespace experimental
 {
+	cv::Mat findLargestHorizontalLines(cv::Mat image);
+	cv::Mat findLargestVerticalLines(cv::Mat image);
 	cv::Mat computeForegroundImage(const std::vector<cv::Mat>& images);
 	std::vector<cv::Mat> computeForegroundImages(const std::vector<cv::Mat>& images);
 	cv::Mat computeHistogram(cv::Mat image);
