@@ -72,6 +72,47 @@ namespace experimental
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
+	// computeGelLocation()
+	//
+	// Find the rectangle corresponding to the gel location within the image.
+	// 
+	// TODO: Don't assume that the gel has been properly segmented before being passed
+	//		 in.
+	//////////////////////////////////////////////////////////////////////////////////
+	Rect computeGelLocation(Mat image)
+	{
+		// Find the top, bottom, left, right pixels of the contour. This is basically the first nonblack pixel that we find by doing a line scan.
+
+		int leftMost = image.size().width - 1, rightMost = 0, topMost = image.size().height - 1, bottomMost = 0;
+
+		for (int i = 0; i < image.size().width; ++i)
+		{
+			for (int j = 0; j < image.size().height; ++j)
+			{
+				Point currentPoint = Point(i, j);
+				uchar currentValue = image.at<uchar>(currentPoint);
+				
+				if (currentValue != 0)
+				{
+					if (currentPoint.x < leftMost)
+						leftMost = currentPoint.x;
+
+					if (currentPoint.x > rightMost)
+						rightMost = currentPoint.x;
+
+					if (currentPoint.y < topMost)
+						topMost = currentPoint.y;
+
+					if (currentPoint.y > bottomMost)
+						bottomMost = currentPoint.y;
+				}
+			}
+		}
+
+		return Rect(leftMost, topMost, rightMost - leftMost, bottomMost - topMost);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// findLargestHorizontalLines()
 	//
 	// Returns an image containing the largest horizontal lines found in the image.

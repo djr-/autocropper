@@ -11,6 +11,7 @@
 namespace experimental
 {
 	cv::Rect computeInnermostRectangle(cv::Mat image);
+	cv::Rect computeGelLocation(cv::Mat image);
 	cv::Mat findLargestHorizontalLines(cv::Mat image);
 	cv::Mat findLargestVerticalLines(cv::Mat image);
 	cv::Mat computeForegroundImage(const std::vector<cv::Mat>& images);

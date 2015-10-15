@@ -44,19 +44,35 @@ Mat preprocessImage(Mat img)
 
 	// TODO: Crop the image based on the nearest non-black pixels to the middle.
 	//		Then, invert the image and compute the largest contour. This should highlight the roots.
-	Rect tmp = computeInnermostRectangle(both);
+	Rect containerRegion = computeInnermostRectangle(both);
 
-	Mat croppedImage = img(tmp);
+	Mat containerImage = img(containerRegion);
 	//imwrite("origimg.png", img);
 	//imwrite("croppedimg.png", croppedImage);
-	//waitKey();
 
-	blur(croppedImage, croppedImage, Size(5, 5));
-	bitwise_not(croppedImage, croppedImage);
-	threshold(croppedImage, croppedImage, 245, 255, CV_THRESH_BINARY);
-	OcvUtility::keepOnlyLargestContour(croppedImage);
+	//Rect gelRegion = computeGelLocation(croppedImage);	// Accident that seems to help remove the bottom parts of the jar
+	//Mat gelImage = croppedImage(gelRegion);
+	//imwrite("gel.png", gelImage);
 
-	imwrite("croppedimg.png", croppedImage);
+	blur(containerImage, containerImage, Size(5, 5));
+	bitwise_not(containerImage, containerImage);
+	threshold(containerImage, containerImage, 245, 255, CV_THRESH_BINARY);
+	OcvUtility::keepOnlyLargestContour(containerImage);
+
+	imwrite("containerImage.png", containerImage);
+
+	//keepOnlyLargestContour(croppedImage);
+
+	Rect gelRegion = computeGelLocation(containerImage);
+	Mat gelImage = containerImage(gelRegion);
+	imwrite("gelImage.png", gelImage);
+
+	bitwise_not(gelImage, gelImage);
+	keepOnlyLargestContour(gelImage);
+	Rect rootRegion = computeGelLocation(gelImage);	//TODO: Compute root locations here, not gel location...
+	Mat rootImage = gelImage(rootRegion);
+
+	imwrite("rootImage.png", rootImage);
 
 	Mat imgBackup = img.clone();
 	Mat enhancedCenterMask = generateEnhancedCenterMask(img.size());
