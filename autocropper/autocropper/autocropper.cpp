@@ -31,12 +31,6 @@ Mat trackbarMethod(Mat image, int sliderValue)
 Mat preprocessImage(Mat img)
 {
 	Mat orig = img.clone();
-	//bitwise_not(img, img);
-
-	//blur(img, img, Size(5, 5));
-	//bitwise_not(img, img);
-	//threshold(img, img, 245, 255, CV_THRESH_BINARY);
-	//OcvUtility::keepOnlyLargestContour(img);
 
 	Mat horiz = findLargestHorizontalLines(img);
 	Mat vert = findLargestVerticalLines(img);
@@ -49,12 +43,6 @@ Mat preprocessImage(Mat img)
 	imwrite("TestImages/2highlightedContainer.png", containerHighlight);
 
 	Mat containerImage = img(containerRegion);
-	//imwrite("origimg.png", img);
-	//imwrite("croppedimg.png", croppedImage);
-
-	//Rect gelRegion = computeGelLocation(croppedImage);	// Accident that seems to help remove the bottom parts of the jar
-	//Mat gelImage = croppedImage(gelRegion);
-	//imwrite("gel.png", gelImage);
 
 	//blur(containerImage, containerImage, Size(3, 3));	//TODO: temporary mechanism to speed up some work below. This decreases accuracy and should not be included in the final iteration.
 	bitwise_not(containerImage, containerImage);
@@ -86,8 +74,6 @@ Mat preprocessImage(Mat img)
 	img.convertTo(img, CV_8UC1);
 
 	bitwise_not(img, img);
-	//blur(img, img, Size(5, 5));
-
 
 	return img;
 }
@@ -111,24 +97,18 @@ int main(int argc, char** argv)
 	vector<Mat> images = ImageReader::readDataset(argv[1]);
 	//Mat img = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);	//TODO: Temporary mechanism to skip reading all of the images.
 
-	vector<Mat> foregroundImages = experimental::computeForegroundImages(images);
+	vector<Mat> foregroundImages = computeForegroundImages(images);
 	Mat orImg = or(foregroundImages);
 
 	imwrite("TestImages/1foregroundORImage.png", orImg);
 
-	//Mat beforeHist = plotHistogram(orImg);
-	//imshow("histBeforeProcessing", beforeHist);
-
 	orImg = preprocessImage(orImg);
-	//Mat afterHist = plotHistogram(orImg);
-	//imshow("histAfterProcessing", afterHist);
 
-	const string WINDOW_NAME = "Thresholded Image";
-	TrackbarWindow tbWindow = TrackbarWindow(WINDOW_NAME, "Thresh", 100, 255, trackbarMethod);
-	resizeWindow(WINDOW_NAME, 1226, 1028);
-	tbWindow.show(orImg);
-
-	waitKey();
+	//const string WINDOW_NAME = "Thresholded Image";
+	//TrackbarWindow tbWindow = TrackbarWindow(WINDOW_NAME, "Thresh", 100, 255, trackbarMethod);
+	//resizeWindow(WINDOW_NAME, 1226, 1028);
+	//tbWindow.show(orImg);
+	//waitKey();
 
 	return EXIT_SUCCESS;
 }
