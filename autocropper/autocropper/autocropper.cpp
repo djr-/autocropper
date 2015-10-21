@@ -34,6 +34,7 @@ Rect computeContainerRegion(Mat originalImage)
 	Mat vert = findLargestVerticalLines(originalImage);
 	Mat containerLines;
 	bitwise_or(horiz, vert, containerLines);
+	imwrite("TestImages/DEBUG/ContainerLines.png", containerLines);
 
 	Rect containerRegion = computeInnermostRectangle(containerLines);
 
@@ -42,7 +43,13 @@ Rect computeContainerRegion(Mat originalImage)
 
 Rect computeGelRegion(Mat containerImage)
 {
-	//blur(containerImage, containerImage, Size(3, 3));	//TODO: temporary mechanism to speed up some work below. This decreases accuracy and should not be included in the final iteration.
+	imwrite("TestImages/DEBUG/_ContainerFinal.png", containerImage);
+
+	auto elem = getStructuringElement(MORPH_RECT, Size(5, 5));
+	morphologyEx(containerImage, containerImage, MORPH_CLOSE, elem);
+	morphologyEx(containerImage, containerImage, MORPH_OPEN, elem);
+	imwrite("TestImages/DEBUG/GelAfterOpen.png", containerImage);
+	
 	bitwise_not(containerImage, containerImage);
 	threshold(containerImage, containerImage, 245, 255, CV_THRESH_BINARY);
 	OcvUtility::keepOnlyLargestContour(containerImage);
@@ -54,9 +61,11 @@ Rect computeGelRegion(Mat containerImage)
 
 Rect computeRootRegion(Mat gelImage)
 {
+	imwrite("TestImages/DEBUG/_GelFinal.png", gelImage);
 	bitwise_not(gelImage, gelImage);
 	keepOnlyLargestContour(gelImage);
 	Rect rootRegion = computeGelLocation(gelImage);	//TODO: Compute root locations here, not gel location...
+	imwrite("TestImages/DEBUG/_RootsFINAL.png", gelImage);
 	
 	return rootRegion;
 }
