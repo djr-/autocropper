@@ -30,6 +30,7 @@ Mat trackbarMethod(Mat image, int sliderValue)
 
 Mat preprocessImage(Mat img)
 {
+	Mat orig = img.clone();
 	//bitwise_not(img, img);
 
 	//blur(img, img, Size(5, 5));
@@ -42,9 +43,10 @@ Mat preprocessImage(Mat img)
 	Mat both;
 	bitwise_or(horiz, vert, both);
 
-	// TODO: Crop the image based on the nearest non-black pixels to the middle.
-	//		Then, invert the image and compute the largest contour. This should highlight the roots.
 	Rect containerRegion = computeInnermostRectangle(both);
+
+	Mat containerHighlight = drawRedRectOnImage(orig, containerRegion, 3);
+	imwrite("TestImages/2highlightedContainer.png", containerHighlight);
 
 	Mat containerImage = img(containerRegion);
 	//imwrite("origimg.png", img);
@@ -54,25 +56,28 @@ Mat preprocessImage(Mat img)
 	//Mat gelImage = croppedImage(gelRegion);
 	//imwrite("gel.png", gelImage);
 
-	blur(containerImage, containerImage, Size(5, 5));
+	//blur(containerImage, containerImage, Size(3, 3));	//TODO: temporary mechanism to speed up some work below. This decreases accuracy and should not be included in the final iteration.
 	bitwise_not(containerImage, containerImage);
 	threshold(containerImage, containerImage, 245, 255, CV_THRESH_BINARY);
 	OcvUtility::keepOnlyLargestContour(containerImage);
 
-	imwrite("containerImage.png", containerImage);
-
-	//keepOnlyLargestContour(croppedImage);
-
 	Rect gelRegion = computeGelLocation(containerImage);
 	Mat gelImage = containerImage(gelRegion);
-	imwrite("gelImage.png", gelImage);
+	imwrite("TestImages/gelImage.png", gelImage);
+
+	Rect gelWRToriginal = Rect(containerRegion.x + gelRegion.x, containerRegion.y + gelRegion.y, gelRegion.width, gelRegion.height);
+	Mat gelHighlight = drawRedRectOnImage(orig, gelWRToriginal, 3);
+	imwrite("TestImages/3highlightedGel.png", gelHighlight);
 
 	bitwise_not(gelImage, gelImage);
 	keepOnlyLargestContour(gelImage);
 	Rect rootRegion = computeGelLocation(gelImage);	//TODO: Compute root locations here, not gel location...
 	Mat rootImage = gelImage(rootRegion);
 
-	imwrite("rootImage.png", rootImage);
+	imwrite("TestImages/rootImage.png", rootImage);
+	Rect rootsWRToriginal = Rect(containerRegion.x + gelRegion.x + rootRegion.x, containerRegion.y + gelRegion.y + rootRegion.y, rootRegion.width, rootRegion.height);
+	Mat rootHighlight = drawRedRectOnImage(orig, rootsWRToriginal, 3);
+	imwrite("TestImages/4highlightedroots.png", rootHighlight);
 
 	Mat imgBackup = img.clone();
 	Mat enhancedCenterMask = generateEnhancedCenterMask(img.size());
@@ -108,6 +113,8 @@ int main(int argc, char** argv)
 
 	vector<Mat> foregroundImages = experimental::computeForegroundImages(images);
 	Mat orImg = or(foregroundImages);
+
+	imwrite("TestImages/1foregroundORImage.png", orImg);
 
 	//Mat beforeHist = plotHistogram(orImg);
 	//imshow("histBeforeProcessing", beforeHist);

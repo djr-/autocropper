@@ -13,6 +13,21 @@ using namespace OcvUtility;
 namespace experimental
 {
 	//////////////////////////////////////////////////////////////////////////////////
+	// drawRedRectOnImage()
+	//
+	// Draw a red rectangle on the image.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat drawRedRectOnImage(Mat image, Rect rect, int thickness)
+	{
+		Mat convertedImage = image.clone();
+
+		cvtColor(image, convertedImage, CV_GRAY2RGB);
+		rectangle(convertedImage, rect, Scalar(0, 0, 255), thickness);
+
+		return convertedImage;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// computeInnermostRectangle()
 	//
 	// Compute the innermost rectangle that can be defined based on the specified
