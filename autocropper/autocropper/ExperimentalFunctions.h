@@ -10,6 +10,7 @@
 
 namespace experimental
 {
+	cv::Mat computeGradientImage(cv::Mat image);
 	cv::Mat drawRedRectOnImage(cv::Mat image, cv::Rect rect, int thickness = 1);
 	cv::Rect computeInnermostRectangle(cv::Mat image);
 	cv::Rect computeGelLocation(cv::Mat image);

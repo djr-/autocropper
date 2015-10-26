@@ -13,6 +13,40 @@ using namespace OcvUtility;
 namespace experimental
 {
 	//////////////////////////////////////////////////////////////////////////////////
+	// computeGradientImage()
+	//
+	// Compute the gradient of the specified image and return it.
+	// Code from:
+	// http://docs.opencv.org/2.4.10/doc/tutorials/imgproc/imgtrans/sobel_derivatives/sobel_derivatives.html
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat computeGradientImage(Mat image)
+	{
+		int scale = 1;
+		int delta = 0;
+		int ddepth = CV_8UC1;
+		Mat grad;
+
+		/// Generate grad_x and grad_y
+		Mat grad_x, grad_y;
+		Mat abs_grad_x, abs_grad_y;
+
+		/// Gradient X
+		//Scharr( src_gray, grad_x, ddepth, 1, 0, scale, delta, BORDER_DEFAULT );
+		Sobel(image, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
+		convertScaleAbs(grad_x, abs_grad_x);
+
+		/// Gradient Y
+		//Scharr( src_gray, grad_y, ddepth, 0, 1, scale, delta, BORDER_DEFAULT );
+		Sobel(image, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
+		convertScaleAbs(grad_y, abs_grad_y);
+
+		/// Total Gradient (approximate)
+		addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad);
+
+		return grad;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// drawRedRectOnImage()
 	//
 	// Draw a red rectangle on the image.
