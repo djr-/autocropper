@@ -13,6 +13,41 @@ using namespace OcvUtility;
 namespace experimental
 {
 	//////////////////////////////////////////////////////////////////////////////////
+	// computeAverageImage()
+	//
+	// Computes the average of several images.
+	//////////////////////////////////////////////////////////////////////////////////
+	Mat computeAverageImage(const vector<Mat>& images)
+	{
+		Mat averageImage = Mat::zeros(images.at(0).size().height, images.at(0).size().width, CV_32FC1);
+
+		for (Mat image : images)
+		{
+			for (int i = 0; i < image.size().height; ++i)
+			{
+				for (int j = 0; j < image.size().width; ++j)
+				{
+					Point currentPoint = Point(j, i);
+					averageImage.at<float>(currentPoint) += image.at<uchar>(currentPoint);
+				}
+			}
+		}
+
+		for (int i = 0; i < averageImage.size().height; ++i)
+		{
+			for (int j = 0; j < averageImage.size().width; ++j)
+			{
+				Point currentPoint = Point(j, i);
+				averageImage.at<float>(currentPoint) /= images.size();
+			}
+		}
+
+		averageImage.convertTo(averageImage, CV_8UC1);
+
+		return averageImage;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// computeGradientImage()
 	//
 	// Compute the gradient of the specified image and return it.
