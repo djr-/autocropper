@@ -89,7 +89,33 @@ Mat preprocessImage(Mat img)
 	imwrite("TestImages/4highlightedroots.png", drawRedRectOnImage(orig, rootRegionWRTorig, 3));
 	Mat rootImage = gelImage(rootRegion);
 
-	//TODO: Compute the widest extents in the lower 3/4 of the image and then snap the left and right edges to that point?
+	////TODO: Compute the widest extents in the lower 3/4 of the image and then snap the left and right edges to that point?
+	//int l = rootImage.size().width;
+	//int r = 0;
+	//int startingHeight = static_cast<int>(rootImage.size().height * .35);
+	//for (int y = startingHeight; y < rootImage.size().height; ++y)
+	//{
+	//	for (int x = 0; x < rootImage.size().width; ++x)
+	//	{
+	//		Point currentPoint = Point(x, y);
+	//		//rootImage.at<uchar>(currentPoint) = 255;	//TODO: Testing where the % line is drawn.
+	//		if (rootImage.at<uchar>(currentPoint) != 0)
+	//		{
+	//			if (currentPoint.x < l)
+	//			{
+	//				l = currentPoint.x;
+	//			}
+	//			if (currentPoint.x > r)
+	//			{
+	//				r = currentPoint.x;
+	//			}
+	//		}
+	//	}
+	//}
+
+	//rootRegionWRTorig.x += l;
+	//rootRegionWRTorig.width = r - l;
+	//imwrite("TestImages/55555highlightedroots.png", drawRedRectOnImage(orig, rootRegionWRTorig, 3));
 
 	return img;
 }
