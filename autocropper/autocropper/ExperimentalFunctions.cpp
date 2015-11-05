@@ -283,7 +283,7 @@ namespace experimental
 			foregroundImage = Scalar::all(0);
 			image.copyTo(foregroundImage, foregroundMask);	//TODO: Does using the mask rather than the image improve the results?
 
-			string filename = utility::FileUtilities::buildFilename("C:\\Temp\\images\\fg", ++i);
+			string filename = utility::FileUtilities::buildFilename("TestImages/DEBUG/foreground/", ++i);
 			if (i > 1)	//TODO_DR: Deal with the first file.
 			{
 				imwrite(filename, foregroundImage);
