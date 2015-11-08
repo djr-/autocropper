@@ -28,17 +28,49 @@ Mat trackbarMethod(Mat image, int sliderValue)
 	return dst;
 }
 
+Rect computeVerticalContainerBoundaries(Mat originalImage)
+{
+	Mat verticalContainerBoundaries = findLargestVerticalLines(originalImage, 0.65);
+	imwrite("TestImages/DEBUG/VerticalContainerLines.png", verticalContainerBoundaries);
+	
+	// If the container is not centered perfectly in front of the camera (which is likely),
+	// then the vertical edges of the container will appear as thick lines in the background subtracted image.
+	Rect verticalContainerRegion = computeInnermostRectangle(verticalContainerBoundaries);
+	
+	return verticalContainerRegion;
+}
+
+Rect computeHorizontalContainerBoundaries(Mat verticalContainerImage)
+{
+	Mat horizontalContainerBoundaries = findLargestHorizontalLines(verticalContainerImage, 0.9);
+	imwrite("TestImages/DEBUG/HorizontalContainerLines.png", horizontalContainerBoundaries);
+	Rect horizontalContainerRegion = computeInnermostRectangle(horizontalContainerBoundaries);
+
+	return horizontalContainerRegion;
+}
+
 Rect computeContainerRegion(Mat originalImage)
 {
-	Mat horiz = findLargestHorizontalLines(originalImage);
-	Mat vert = findLargestVerticalLines(originalImage);
-	Mat containerLines;
-	bitwise_or(horiz, vert, containerLines);
-	imwrite("TestImages/DEBUG/ContainerLines.png", containerLines);
+	//Mat horiz = findLargestHorizontalLines(originalImage);
+	//Mat vert = findLargestVerticalLines(originalImage);
+	//Mat containerLines;
+	//bitwise_or(horiz, vert, containerLines);
+	//imwrite("TestImages/DEBUG/ContainerLines.png", containerLines);
 
-	Rect containerRegion = computeInnermostRectangle(containerLines);
+	//Rect containerRegion = computeInnermostRectangle(containerLines);
 
-	return containerRegion;
+	//return containerRegion;
+	//bitwise_not(originalImage, originalImage);
+
+	Rect verticalContainerLines = computeVerticalContainerBoundaries(originalImage);
+	Mat verticalContainerImage = originalImage(verticalContainerLines);
+	imwrite("TestImages/DEBUG/VerticalContainerImage.png", verticalContainerImage);
+
+	Rect horziontalContainerLines = computeHorizontalContainerBoundaries(verticalContainerImage);
+	Mat containerImage = verticalContainerImage(horziontalContainerLines);
+	imwrite("TestImages/DEBUG/ContainerImage.png", containerImage);
+
+	return horziontalContainerLines;	//TODO_DR: Remove.
 }
 
 Rect computeGelRegion(Mat containerImage)
@@ -79,15 +111,19 @@ Mat preprocessImage(Mat img)
 	imwrite("TestImages/2highlightedContainer.png", drawRedRectOnImage(orig, containerRegion, 3));
 	Mat containerImage = img(containerRegion);
 
-	Rect gelRegion = computeGelRegion(img(containerRegion));
-	Rect gelRegionWRTorig = Rect(containerRegion.x + gelRegion.x, containerRegion.y + gelRegion.y, gelRegion.width, gelRegion.height);
-	imwrite("TestImages/3highlightedGel.png", drawRedRectOnImage(orig, gelRegionWRTorig, 3));
-	Mat gelImage = containerImage(gelRegion);
+	//Rect gelRegion = computeGelRegion(img(containerRegion));
+	//Rect gelRegionWRTorig = Rect(containerRegion.x + gelRegion.x, containerRegion.y + gelRegion.y, gelRegion.width, gelRegion.height);
+	//imwrite("TestImages/3highlightedGel.png", drawRedRectOnImage(orig, gelRegionWRTorig, 3));
+	//Mat gelImage = containerImage(gelRegion);
 
-	Rect rootRegion = computeRootRegion(gelImage);
-	Rect rootRegionWRTorig = Rect(containerRegion.x + gelRegion.x + rootRegion.x, containerRegion.y + gelRegion.y + rootRegion.y, rootRegion.width, rootRegion.height);
-	imwrite("TestImages/4highlightedroots.png", drawRedRectOnImage(orig, rootRegionWRTorig, 3));
-	Mat rootImage = gelImage(rootRegion);
+	//Rect rootRegion = computeRootRegion(gelImage);
+	//Rect rootRegionWRTorig = Rect(containerRegion.x + gelRegion.x + rootRegion.x, containerRegion.y + gelRegion.y + rootRegion.y, rootRegion.width, rootRegion.height);
+	//imwrite("TestImages/4highlightedroots.png", drawRedRectOnImage(orig, rootRegionWRTorig, 3));
+	//Mat rootImage = gelImage(rootRegion);
+
+
+
+
 
 	////TODO: Compute the widest extents in the lower 3/4 of the image and then snap the left and right edges to that point?
 	//int l = rootImage.size().width;

@@ -15,8 +15,8 @@ namespace experimental
 	cv::Mat drawRedRectOnImage(cv::Mat image, cv::Rect rect, int thickness = 1);
 	cv::Rect computeInnermostRectangle(cv::Mat image);
 	cv::Rect computeGelLocation(cv::Mat image);
-	cv::Mat findLargestHorizontalLines(cv::Mat image);
-	cv::Mat findLargestVerticalLines(cv::Mat image);
+	cv::Mat findLargestHorizontalLines(cv::Mat image, const double percentOfWidth);
+	cv::Mat findLargestVerticalLines(cv::Mat image, const double PercentOfHeight);
 	cv::Mat computeForegroundImage(const std::vector<cv::Mat>& images);
 	std::vector<cv::Mat> computeForegroundImages(const std::vector<cv::Mat>& images);
 	cv::Mat computeHistogram(cv::Mat image);

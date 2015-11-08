@@ -201,11 +201,12 @@ namespace experimental
 	//
 	// Returns an image containing the largest horizontal lines found in the image.
 	//////////////////////////////////////////////////////////////////////////////////
-	Mat findLargestHorizontalLines(Mat image)
+	Mat findLargestHorizontalLines(Mat image, const double percentOfWidth)
 	{
 		Mat horizontalLines;
 
-		auto horizElem = getStructuringElement(MORPH_RECT, Size(image.size().width / 2, 1));
+		int minimumHorizontalLineSize = static_cast<int>(image.size().width * percentOfWidth);
+		auto horizElem = getStructuringElement(MORPH_RECT, Size(minimumHorizontalLineSize, 1));
 		morphologyEx(image, horizontalLines, MORPH_OPEN, horizElem);
 
 		return horizontalLines;
@@ -216,11 +217,12 @@ namespace experimental
 	//
 	// Returns an image containing the largest vertical lines found in the image.
 	//////////////////////////////////////////////////////////////////////////////////
-	Mat findLargestVerticalLines(Mat image)
+	Mat findLargestVerticalLines(Mat image, const double percentOfHeight)
 	{
 		Mat verticalLines;
 
-		auto vertElem = getStructuringElement(MORPH_RECT, Size(1, image.size().height / 2));
+		int minimumVerticalLineSize = static_cast<int>(image.size().height * percentOfHeight);
+		auto vertElem = getStructuringElement(MORPH_RECT, Size(1, minimumVerticalLineSize));
 		morphologyEx(image, verticalLines, MORPH_OPEN, vertElem);
 
 		return verticalLines;
