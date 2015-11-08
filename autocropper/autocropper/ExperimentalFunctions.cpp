@@ -156,6 +156,46 @@ namespace experimental
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
+	// computeOutermostRectangle()
+	//
+	// Compute the outermost rectangle that can be formed by the specified image.
+	// For now let's only check the top and bottom since this will only be used to
+	// find the horizontal lines in the container image.
+	//////////////////////////////////////////////////////////////////////////////////
+	Rect computeOutermostRectangle(Mat image)
+	{
+		Point center = Point(image.size().width / 2, image.size().height / 2);
+		int u = 0, d = image.size().height, l = 0, r = image.size().width;
+
+		// Start at the top middle point and go until you find the first non-black pixel.
+		// Start at the bottom middle point and go until you find the first non-black pixel
+		// Start at the middle left point and go until ....
+		// Start at the middle right point ...
+
+		for (int i = 0; i < image.size().height; ++i)
+		{
+			Point currentPoint = Point(center.x, i);
+			if (image.at<uchar>(currentPoint) != 0)
+			{
+				u = i;
+				break;
+			}
+		}
+
+		//for (int i = image.size().height - 1; i >= 0; --i)
+		//{
+		//	Point currentPoint = Point(center.x, i);
+		//	if (image.at<uchar>(currentPoint) != 0)
+		//	{
+		//		d = i;
+		//		break;
+		//	}
+		//}
+
+		return Rect(l, u, r - l, d - u);
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// computeGelLocation()
 	//
 	// Find the rectangle corresponding to the gel location within the image.
