@@ -42,7 +42,7 @@ Rect computeVerticalContainerBoundaries(Mat originalImage)
 
 Rect computeHorizontalContainerBoundaries(Mat verticalContainerImage)
 {
-	Mat horizontalContainerBoundaries = findLargestHorizontalLines(verticalContainerImage, 0.99);
+	Mat horizontalContainerBoundaries = findLargestHorizontalLines(verticalContainerImage, 0.9);
 	imwrite("TestImages/DEBUG/HorizontalContainerLines.png", horizontalContainerBoundaries);
 	Rect horizontalContainerRegion = computeInnermostRectangle(horizontalContainerBoundaries);
 
