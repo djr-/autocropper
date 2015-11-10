@@ -67,11 +67,15 @@ Rect computeContainerRegion(Mat originalImage)
 	imwrite("TestImages/DEBUG/VerticalContainerImage.png", verticalContainerImage);
 
 	auto elem = getStructuringElement(MORPH_RECT, Size(9, 9));
-	morphologyEx(verticalContainerImage, verticalContainerImage, MORPH_CLOSE, elem);
+	Mat tmpVerticalContainerImage;
+	morphologyEx(verticalContainerImage, tmpVerticalContainerImage, MORPH_CLOSE, elem);
 
-	Rect horziontalContainerLines = computeHorizontalContainerBoundaries(verticalContainerImage);
+	Rect horziontalContainerLines = computeHorizontalContainerBoundaries(tmpVerticalContainerImage);
 	Mat containerImage = verticalContainerImage(horziontalContainerLines);
 	imwrite("TestImages/DEBUG/ContainerImage.png", containerImage);
+
+	keepOnlyLargestContour(containerImage);
+	imwrite("TestImages/DEBUG/PossibleRootSystem.png", containerImage);
 
 	return horziontalContainerLines;	//TODO_DR: Remove.
 }
