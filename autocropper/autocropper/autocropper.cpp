@@ -42,9 +42,9 @@ Rect computeVerticalContainerBoundaries(Mat originalImage)
 
 Rect computeHorizontalContainerBoundaries(Mat verticalContainerImage)
 {
-	Mat horizontalContainerBoundaries = findLargestHorizontalLines(verticalContainerImage, 0.9);
+	Mat horizontalContainerBoundaries = findLargestHorizontalLines(verticalContainerImage, 0.99);
 	imwrite("TestImages/DEBUG/HorizontalContainerLines.png", horizontalContainerBoundaries);
-	Rect horizontalContainerRegion = computeOutermostRectangle(horizontalContainerBoundaries);
+	Rect horizontalContainerRegion = computeInnermostRectangle(horizontalContainerBoundaries);
 
 	return horizontalContainerRegion;
 }
@@ -65,6 +65,9 @@ Rect computeContainerRegion(Mat originalImage)
 	Rect verticalContainerLines = computeVerticalContainerBoundaries(originalImage);
 	Mat verticalContainerImage = originalImage(verticalContainerLines);
 	imwrite("TestImages/DEBUG/VerticalContainerImage.png", verticalContainerImage);
+
+	auto elem = getStructuringElement(MORPH_RECT, Size(9, 9));
+	morphologyEx(verticalContainerImage, verticalContainerImage, MORPH_CLOSE, elem);
 
 	Rect horziontalContainerLines = computeHorizontalContainerBoundaries(verticalContainerImage);
 	Mat containerImage = verticalContainerImage(horziontalContainerLines);

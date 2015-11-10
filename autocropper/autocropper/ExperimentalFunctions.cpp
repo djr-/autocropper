@@ -155,6 +155,8 @@ namespace experimental
 		return Rect(l, u, r - l, d - u);
 	}
 
+	//TODO: Write a function to compute the first full row of nonwhite pixels from the center.
+
 	//////////////////////////////////////////////////////////////////////////////////
 	// computeOutermostRectangle()
 	//
