@@ -66,7 +66,7 @@ Rect computeContainerRegion(Mat originalImage)
 	Mat verticalContainerImage = originalImage(verticalContainerLines);
 	imwrite("TestImages/DEBUG/VerticalContainerImage.png", verticalContainerImage);
 
-	auto elem = getStructuringElement(MORPH_RECT, Size(9, 9));
+	auto elem = getStructuringElement(MORPH_RECT, Size(11, 9));
 	Mat tmpVerticalContainerImage;
 	morphologyEx(verticalContainerImage, tmpVerticalContainerImage, MORPH_CLOSE, elem);
 
