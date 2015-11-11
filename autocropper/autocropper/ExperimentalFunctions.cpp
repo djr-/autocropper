@@ -249,7 +249,7 @@ namespace experimental
 
 		int minimumHorizontalLineSize = static_cast<int>(image.size().width * percentOfWidth);
 		auto horizElem = getStructuringElement(MORPH_RECT, Size(minimumHorizontalLineSize, 1));
-		morphologyEx(image, horizontalLines, MORPH_OPEN, horizElem);
+		morphologyEx(image, horizontalLines, MORPH_OPEN, horizElem, Point(-1,-1), 1, BORDER_CONSTANT, Scalar(0));
 
 		return horizontalLines;
 	}
