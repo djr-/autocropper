@@ -6,7 +6,6 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-#include <opencv2/video.hpp>
 #include <iostream>
 
 using namespace autocropper;
@@ -74,39 +73,6 @@ Rect computeContainerRegion(Mat originalImage)
 	Rect horziontalContainerLines = computeHorizontalContainerBoundaries(tmpVerticalContainerImage);
 	Mat containerImage = verticalContainerImage(horziontalContainerLines);
 	imwrite("TestImages/DEBUG/ContainerImage.png", containerImage);
-
-	//TODO: Test with new image.
-	//Mat img = imread("C:/Users/Drew/Desktop/Image sets for Drew/AtTSTp0001d14_001.PNG", CV_LOAD_IMAGE_GRAYSCALE);
-	//Rect newRect = Rect(verticalContainerLines.x + horziontalContainerLines.x, verticalContainerLines.y + horziontalContainerLines.y, horziontalContainerLines.width, horziontalContainerLines.height);
-	////Mat tst = img(newRect);
-
-	//Mat foregroundMask, foregroundImage, backgroundImage;
-	//Ptr<BackgroundSubtractorMOG2> pMOG2 = createBackgroundSubtractorMOG2(500, 12);
-
-	//vector<Mat> foregroundImages;
-
-	//int i = 0;
-	//vector<Mat> images = ImageReader::readDataset("C:/Users/Drew/Desktop/Image sets for Drew/AtTSTp0001d14_001.PNG");
-	//for each (Mat image in images)
-	//{
-	//	image = image(newRect);
-	//	if (foregroundImage.empty())
-	//		foregroundImage.create(image.size(), image.type());
-
-	//	pMOG2->apply(image, foregroundMask);
-
-	//	foregroundImage = Scalar::all(0);
-	//	image.copyTo(foregroundImage, foregroundMask);	//TODO: Does using the mask rather than the image improve the results?
-
-	//	string filename = utility::FileUtilities::buildFilename("TestImages/DEBUG/foreground2/", ++i);
-	//	if (i > 1)	//TODO_DR: Deal with the first file.
-	//	{
-	//		imwrite(filename, foregroundImage);
-	//		foregroundImages.push_back(foregroundImage.clone());
-	//	}
-	//}
-	//Mat orImg = or(foregroundImages);
-	//imwrite("testor.png", orImg);
 
 	keepOnlyLargestContour(containerImage);
 	imwrite("TestImages/DEBUG/PossibleRootSystem.png", containerImage);
