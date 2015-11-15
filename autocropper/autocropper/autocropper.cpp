@@ -77,6 +77,61 @@ Rect computeContainerRegion(Mat originalImage)
 	keepOnlyLargestContour(containerImage);
 	imwrite("TestImages/DEBUG/PossibleRootSystem.png", containerImage);
 
+	// TODO: Move this code to it's own function -- temporarily here to do a quick and lazy prototype.
+	int rowPositionWithMaximumBlackPixels = 0;
+	int maxBlackPixelsInAnyRow = 0;
+
+	for (int y = 0; y < static_cast<int>(containerImage.size().height * 0.1); ++y)
+	{
+		int numberOfBlackPixelsInRow = 0;
+
+		for (int x = 0; x < containerImage.size().width; ++x)
+		{
+			Point currentPoint = Point(x, y);
+			if (containerImage.at<uchar>(currentPoint) == 0)
+			{
+				numberOfBlackPixelsInRow++;
+			}
+		}
+
+		if (numberOfBlackPixelsInRow > maxBlackPixelsInAnyRow)
+		{
+			maxBlackPixelsInAnyRow = numberOfBlackPixelsInRow;
+			rowPositionWithMaximumBlackPixels = y;
+		}
+	}
+
+	int b = 0;
+	int l = containerImage.size().width;
+	int r = 0;
+	for (int y = rowPositionWithMaximumBlackPixels; y < containerImage.size().height; ++y)
+	{
+		for (int x = 0; x < containerImage.size().width; ++x)
+		{
+			Point currentPoint = Point(x, y);
+			//containerImage.at<uchar>(currentPoint) = 255;	//TODO: Testing where the % line is drawn.
+			if (containerImage.at<uchar>(currentPoint) != 0)
+			{
+				if (currentPoint.x < l)
+				{
+					l = currentPoint.x;
+				}
+				if (currentPoint.x > r)
+				{
+					r = currentPoint.x;
+				}
+				if (currentPoint.y > b)
+				{
+					b = currentPoint.y;
+				}
+			}
+		}
+	}
+
+	Rect rootRectangle = Rect(l, 0, r - l, b);
+	Mat rootImage = containerImage(rootRectangle);
+	imwrite("TestImages/DEBUG/AA_FINALTEST_ROOT.png", rootImage);
+
 	return horziontalContainerLines;	//TODO_DR: Remove.
 }
 
