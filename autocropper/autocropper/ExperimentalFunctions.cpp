@@ -13,6 +13,79 @@ using namespace OcvUtility;
 namespace experimental
 {
 	//////////////////////////////////////////////////////////////////////////////////
+	// computeRowWithMaximumBlackPixels()
+	//
+	// Compute the row of the specified image with the maximum number of black pixels.
+	//////////////////////////////////////////////////////////////////////////////////
+	int computeRowWithMaximumBlackPixels(cv::Mat image)
+	{
+		int rowPositionWithMaximumBlackPixels = 0;
+		int maxBlackPixelsInAnyRow = 0;
+
+		for (int y = 0; y < static_cast<int>(image.size().height * 0.1); ++y)
+		{
+			int numberOfBlackPixelsInRow = 0;
+
+			for (int x = 0; x < image.size().width; ++x)
+			{
+				Point currentPoint = Point(x, y);
+				if (image.at<uchar>(currentPoint) == 0)
+				{
+					numberOfBlackPixelsInRow++;
+				}
+			}
+
+			if (numberOfBlackPixelsInRow > maxBlackPixelsInAnyRow)
+			{
+				maxBlackPixelsInAnyRow = numberOfBlackPixelsInRow;
+				rowPositionWithMaximumBlackPixels = y;
+			}
+		}
+
+		return rowPositionWithMaximumBlackPixels;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	// computeMaximumRootExtents()
+	//
+	// Compute the maximum root extents below a specified startingY position.
+	// TODO: Generalize this function.
+	//////////////////////////////////////////////////////////////////////////////////
+	Rect computeMaximumRootExtents(cv::Mat image, const int startingY)
+	{
+		int b = 0;
+		int l = image.size().width;
+		int r = 0;
+		for (int y = startingY; y < image.size().height; ++y)
+		{
+			for (int x = 0; x < image.size().width; ++x)
+			{
+				Point currentPoint = Point(x, y);
+				//containerImage.at<uchar>(currentPoint) = 255;	//TODO: Testing where the % line is drawn.
+				if (image.at<uchar>(currentPoint) != 0)
+				{
+					if (currentPoint.x < l)
+					{
+						l = currentPoint.x;
+					}
+					if (currentPoint.x > r)
+					{
+						r = currentPoint.x;
+					}
+					if (currentPoint.y > b)
+					{
+						b = currentPoint.y;
+					}
+				}
+			}
+		}
+
+		Rect rootRectangle = Rect(l, 0, r - l, b);
+
+		return rootRectangle;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
 	// computeAverageImage()
 	//
 	// Computes the average of several images.
@@ -195,47 +268,6 @@ namespace experimental
 		//}
 
 		return Rect(l, u, r - l, d - u);
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	// computeGelLocation()
-	//
-	// Find the rectangle corresponding to the gel location within the image.
-	// 
-	// TODO: Don't assume that the gel has been properly segmented before being passed
-	//		 in.
-	//////////////////////////////////////////////////////////////////////////////////
-	Rect computeGelLocation(Mat image)
-	{
-		// Find the top, bottom, left, right pixels of the contour. This is basically the first nonblack pixel that we find by doing a line scan.
-
-		int leftMost = image.size().width - 1, rightMost = 0, topMost = image.size().height - 1, bottomMost = 0;
-
-		for (int i = 0; i < image.size().width; ++i)
-		{
-			for (int j = 0; j < image.size().height; ++j)
-			{
-				Point currentPoint = Point(i, j);
-				uchar currentValue = image.at<uchar>(currentPoint);
-				
-				if (currentValue != 0)
-				{
-					if (currentPoint.x < leftMost)
-						leftMost = currentPoint.x;
-
-					if (currentPoint.x > rightMost)
-						rightMost = currentPoint.x;
-
-					if (currentPoint.y < topMost)
-						topMost = currentPoint.y;
-
-					if (currentPoint.y > bottomMost)
-						bottomMost = currentPoint.y;
-				}
-			}
-		}
-
-		return Rect(leftMost, topMost, rightMost - leftMost, bottomMost - topMost);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////

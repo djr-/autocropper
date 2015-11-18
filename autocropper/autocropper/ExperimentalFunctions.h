@@ -10,12 +10,13 @@
 
 namespace experimental
 {
+	int computeRowWithMaximumBlackPixels(cv::Mat image);
+	cv::Rect computeMaximumRootExtents(cv::Mat image, const int startingY);
 	cv::Mat computeAverageImage(const std::vector<cv::Mat>& image);
 	cv::Mat computeGradientImage(cv::Mat image);
 	cv::Mat drawRedRectOnImage(cv::Mat image, cv::Rect rect, int thickness = 1);
 	cv::Rect computeInnermostRectangle(cv::Mat image);
 	cv::Rect computeOutermostRectangle(cv::Mat image);
-	cv::Rect computeGelLocation(cv::Mat image);
 	cv::Mat findLargestHorizontalLines(cv::Mat image, const double percentOfWidth);
 	cv::Mat findLargestVerticalLines(cv::Mat image, const double PercentOfHeight);
 	cv::Mat computeForegroundImage(const std::vector<cv::Mat>& images);

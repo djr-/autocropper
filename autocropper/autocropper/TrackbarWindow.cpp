@@ -33,4 +33,5 @@ void TrackbarWindow::onTrackbar(int trackbarPosition, void* userData)
 	Mat dst = trackbarWindow._trackbarBody(trackbarWindow._image, trackbarWindow._sliderValue);
 
 	imshow(trackbarWindow._windowName, dst);
+	waitKey();
 }
