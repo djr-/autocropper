@@ -56,7 +56,7 @@ Rect computeGelRegion(Mat originalImage)
 	return gelRegionWRToriginal;
 }
 
-Mat computeCroppedImage(Mat img)
+Rect computeCropRegion(Mat img)
 {
 	// Draw original image.
 	Mat orig = img.clone();
@@ -79,7 +79,23 @@ Mat computeCroppedImage(Mat img)
 	imwrite("TestImages/DEBUG/AA_FINALTEST_ROOT.png", rootImage);
 	imwrite("TestImages/3highlightedRoots.png", drawRedRectOnImage(orig, rootRectangleWRToriginal, 3));
 
-	return img;
+	return rootRectangleWRToriginal;
+}
+
+void cropOriginalImages(vector<Mat> originalImages, Rect cropRegion)
+{
+	const string outputDirectory = "TestImages/CroppedImages/";
+	const string outputExtension = ".png";
+	int i = 1;
+
+	for (auto image : originalImages)
+	{
+		stringstream ss;
+		ss << outputDirectory << i++ << outputExtension;
+		string str = ss.str();
+		imwrite(str, image(cropRegion));
+		ss.clear();
+	}
 }
 
 int main(int argc, char** argv)
@@ -106,7 +122,9 @@ int main(int argc, char** argv)
 	
 	//TODO: Consider copying the left half of the image onto the right half and vice versa? This could simplify some cases -- Is this safe to do?
 
-	Mat croppedImage = computeCroppedImage(orImage);
+	Rect cropRegion = computeCropRegion(orImage);
+
+	cropOriginalImages(originalImages, cropRegion);
 
 	return EXIT_SUCCESS;
 }
