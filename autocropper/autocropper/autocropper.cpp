@@ -119,8 +119,6 @@ int main(int argc, char** argv)
 	vector<Mat> foregroundImages = computeForegroundImages(originalImages);
 	
 	Mat orImage = or(foregroundImages);
-	
-	//TODO: Consider copying the left half of the image onto the right half and vice versa? This could simplify some cases -- Is this safe to do?
 
 	Rect cropRegion = computeCropRegion(orImage);
 
