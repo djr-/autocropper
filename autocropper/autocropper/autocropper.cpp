@@ -72,6 +72,27 @@ Rect computeCropRegion(Mat img)
 	Mat rootSystem = containerImage;
 	imwrite("TestImages/DEBUG/PossibleRootSystem.png", containerImage);
 
+	int lowestRowWithWhitePixelsAboveThreshold = -1;
+	for (int row = 0; row < containerImage.rows * 0.01; row++) // Scan the top 1% of the rows for 
+	{
+		int numberOfWhitePixelsInRow = 0;
+		for (int col = 0; col < containerImage.cols; col++)
+		{
+			if (containerImage.at<uchar>(Point(col, row)) != 0)
+				numberOfWhitePixelsInRow++;
+		}
+
+		if (numberOfWhitePixelsInRow > containerImage.cols * 0.5)
+		{
+			lowestRowWithWhitePixelsAboveThreshold = row;
+		}
+	}
+
+	Rect cropTop = Rect(0, lowestRowWithWhitePixelsAboveThreshold, containerImage.cols, containerImage.rows - lowestRowWithWhitePixelsAboveThreshold);
+	containerImage = containerImage(cropTop);
+
+	keepOnlyLargestContour(containerImage);
+
 	int rowPositionWithMaximumBlackPixels = computeRowWithMaximumBlackPixels(containerImage);
 	Rect rootRectangle = computeMaximumRootExtents(containerImage, rowPositionWithMaximumBlackPixels);
 	Rect rootRectangleWRToriginal = Rect(rootRectangle.x + gelRegion.x, rootRectangle.y + gelRegion.y, rootRectangle.width, rootRectangle.height);
